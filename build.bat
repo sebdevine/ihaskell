@@ -1,3 +1,3 @@
 @ECHO OFF
 
-docker build -t ihaskell:seb .
+docker build -t sdevine/ihaskell:latest .
