@@ -43,6 +43,7 @@ RUN echo "user-install: True">> ${HOME}/.cabal/config
 RUN cabal update
 
 # Add more packages here
+RUN cabal install alex
 RUN cabal install happy 
 RUN cabal install cpphs
 RUN cabal install ihaskell
