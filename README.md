@@ -1,4 +1,4 @@
-# IHaskell
+# IHaskell Docker
 IHaskell docker image
 
  - IHaskell [project page](https://github.com/gibiansky/IHaskell)
