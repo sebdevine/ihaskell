@@ -38,11 +38,6 @@ RUN conda install -y jupyter notebook nb_conda_kernels
 RUN conda update -y --update-all
 RUN conda clean -ltipsy 
 
-# Install Jupyter dark theme
-RUN pip install jupyterthemes
-RUN pip install --upgrade jupyterthemes
-RUN jt -t monokai -f fira -fs 13 -nf ptsans -nfs 11 -N -kl -cursw 5 -cursc r -cellw 95% -T
-
 # Install ihaskell (no stack)
 ENV PATH ${HOME}/.local/bin:${HOME}/.cabal/bin:${PATH}
 
@@ -60,11 +55,18 @@ RUN ihaskell install
 
 # Avoid : ihaskell: Ambiguous module name ‘Language.Haskell.TH’: 
 #         it was found in multiple packages: ghc-lib-parser-0.20190516 template-haskell-2.14.0.0
-RUN ghc-pkg unregister --force ghc-lib-parser
+# Latest build @ 2019-11-13, ghc-lib-parser is not found
+# RUN ghc-pkg unregister --force ghc-lib-parser
 
 # Setup notebook config and folder (volume)
 RUN mkdir -p ${HOME}/notebooks
 RUN jupyter notebook --generate-config
+
+# Install Jupyter dark theme
+# RUN pip install jupyterthemes
+RUN pip install jupyter_contrib_nbextensions
+RUN jupyter contrib nbextension install --user
+# RUN jt -t monokai  # -f fira -fs 13 -nf ptsans -nfs 11 -N -kl -cursw 5 -cursc r -cellw 95% -T
 
 # Entry point, no security, no browser
 CMD ["jupyter", "notebook", "--ip", "0.0.0.0", "--NotebookApp.port=8899", "--no-browser", "--NotebookApp.notebook_dir=~/notebooks", "--NotebookApp.token=''", "--KernelManager.autorestart=False"]
