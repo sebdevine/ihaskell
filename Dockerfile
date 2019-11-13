@@ -38,6 +38,11 @@ RUN conda install -y jupyter notebook nb_conda_kernels
 RUN conda update -y --update-all
 RUN conda clean -ltipsy 
 
+# Install Jupyter dark theme
+RUN pip install jupyterthemes
+RUN pip install --upgrade jupyterthemes
+RUN jt -t monokai -f fira -fs 13 -nf ptsans -nfs 11 -N -kl -cursw 5 -cursc r -cellw 95% -T
+
 # Install ihaskell (no stack)
 ENV PATH ${HOME}/.local/bin:${HOME}/.cabal/bin:${PATH}
 
