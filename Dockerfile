@@ -1,9 +1,5 @@
-
-# Official haskell image, latest 8.x.y
-FROM haskell:8
-
-# From IHaskell/Dockerfile:
-# FROM fpco/stack-build:lts-13.22
+# Official haskell image, latest 8.8
+FROM haskell:8.8
 
 # Update the system and install dev packages 
 RUN apt-get update --fix-missing 
@@ -59,8 +55,10 @@ RUN ihaskell install
 # RUN ghc-pkg unregister --force ghc-lib-parser
 
 # Setup notebook config and folder (volume)
-RUN mkdir -p ${HOME}/notebooks
+RUN conda install -c conda-forge jupyterlab
 RUN jupyter notebook --generate-config
+RUN jupyter serverextension enable --py jupyterlab --sys-prefix
+RUN mkdir -p ${HOME}/notebooks
 
 # Entry point, no security, no browser
-CMD ["jupyter", "notebook", "--ip", "0.0.0.0", "--NotebookApp.port=8899", "--no-browser", "--NotebookApp.notebook_dir=~/notebooks", "--NotebookApp.token=''", "--KernelManager.autorestart=False"]
+CMD ["jupyter", "lab", "--ip", "0.0.0.0", "--NotebookApp.port=8899", "--no-browser", "--NotebookApp.notebook_dir=~/notebooks", "--NotebookApp.token=''", "--KernelManager.autorestart=False"]
